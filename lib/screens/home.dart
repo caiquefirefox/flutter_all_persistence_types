@@ -21,21 +21,30 @@ class Home extends StatelessWidget {
         body: ListView(
           children: <Widget>[
             Expanded(
-              child: SqliteWidget,
-            ),
+                child: ListTile(
+              leading: buildSvgIcon('images/sqlite-icon.svg'),
+              title: const Text('SQL Lite'),
+              subtitle: const Text('Lista de Pessoas'),
+              trailing: const Icon(Icons.navigate_next),
+              onTap: () {
+                Navigator.pushNamed(context, "/person");
+              },
+            )),
             divisorListMain()
           ],
         ));
   }
 
-  Widget SqliteWidget = Card(
+  /*Widget SqliteWidget = Card(
       child: ListTile(
     leading: buildSvgIcon('images/sqlite-icon.svg'),
     title: const Text('SQL Lite'),
     subtitle: const Text('Lista de Pessoas'),
     trailing: const Icon(Icons.navigate_next),
-    //onTap: ,
-  ));
+    onTap: () {
+      Navigator.pushNamed(context, "/person");
+    },
+  ));*/
 
   List<Widget> buildListItens() {
     return databases
