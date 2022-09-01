@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_all_persistence_types/nosql/addBook.dart';
+import 'package:flutter_all_persistence_types/nosql/daos/BookDao.dart';
 import 'package:flutter_all_persistence_types/sqllite/addPerson.dart';
+import 'database/appDatabase.dart';
 import 'models/Book.dart';
 import '../utils/CustomWidgets.dart';
 
@@ -14,6 +16,7 @@ class ListBook extends StatefulWidget {
 }
 
 class _ListBookState extends State<ListBook> {
+  BookDao? dao;
   List<Book> books = <Book>[];
 
   @override
@@ -22,11 +25,42 @@ class _ListBookState extends State<ListBook> {
     getAllBooks();
   }
 
-  getAllBooks() async {}
+  getAllBooks() async {
+    final database = await $FloorAppDatabase
+        .databaseBuilder('app_floor_database.db')
+        .build();
+    dao = database.bookDao;
+    if (dao != null) {
+      final result = await dao!.findAllBooks();
 
-  insertBook(Book book) async {}
+      if (result.isNotEmpty) {
+        setState(() {
+          books = result;
+        });
+      }
+    }
+  }
 
-  deleteBook(int index) async {}
+  insertBook(Book book) async {
+    if (dao != null) {
+      final id = await dao!.insertBook(book);
+      book.id = id;
+
+      setState(() {
+        books.add(book);
+      });
+    }
+  }
+
+  deleteBook(int index) async {
+    if (dao != null) {
+      final book = books[index];
+      final id = await dao!.deleteBook(book);
+      setState(() {
+        books.removeAt(index);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
