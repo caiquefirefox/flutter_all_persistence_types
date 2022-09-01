@@ -29,6 +29,27 @@ class _ListPersonState extends State<ListPerson> {
     });
   }
 
+  insertPerson(Person person) async {
+    int id = await PersonDao().insertPerson(person);
+
+    if (id > 0) {
+      person.id = id;
+      setState(() {
+        persons.add(person);
+      });
+    }
+  }
+
+  deletePerson(int index) async {
+    Person person = persons[index];
+    if (person.id != null) {
+      await PersonDao().deletePersonById(person.id!);
+      setState(() {
+        persons.removeAt(index);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,33 +61,33 @@ class _ListPersonState extends State<ListPerson> {
               onPressed: () {
                 Navigator.push(context,
                         MaterialPageRoute(builder: (context) => AddPerson()))
-                    .then((person) => {
-                          setState(() {
-                            persons.add(person);
-                          })
-                        });
+                    .then((person) => insertPerson(person));
               })
         ],
       ),
-      body: ListView(children: buildListItems()),
+      body: ListView.separated(
+        itemCount: persons.length,
+        itemBuilder: (context, index) => buildListItems(index),
+        separatorBuilder: (context, index) => const Divider(height: 1),
+      ),
     );
   }
 
-  List<Widget> buildListItems() {
-    return persons
-        .map((p) => Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(5)),
-                child: ListTile(
-                  leading: Text(p.id != null ? p.id.toString() : "-1"),
-                  title: Text(p.firstName),
-                  subtitle: Text(p.lastName),
-                ),
-              ),
-            ))
-        .toList();
+  Widget buildListItems(int index) {
+    Person p = persons[index];
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(5)),
+        child: ListTile(
+          leading: Text(p.id != null ? p.id.toString() : "-1"),
+          title: Text(p.firstName),
+          subtitle: Text(p.lastName),
+          onLongPress: (() => deletePerson(persons.indexOf(p))),
+        ),
+      ),
+    );
   }
 }

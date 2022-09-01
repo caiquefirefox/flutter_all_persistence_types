@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_all_persistence_types/models/DatabaseWidget.dart';
+import 'package:flutter_all_persistence_types/nosql/listBook.dart';
 
 import 'screens/home.dart';
 import 'sqllite/listPerson.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => Home(),
         '/person': (context) => ListPerson(),
+        '/book': (context) => ListBook(),
       },
     );
   }

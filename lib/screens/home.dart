@@ -30,7 +30,18 @@ class Home extends StatelessWidget {
                 Navigator.pushNamed(context, "/person");
               },
             )),
-            divisorListMain()
+            divisorListMain(),
+            Expanded(
+                child: ListTile(
+              leading: buildSvgIcon('images/db.svg'),
+              title: const Text('Floor'),
+              subtitle: const Text('Lista de Livros'),
+              trailing: const Icon(Icons.navigate_next),
+              onTap: () {
+                Navigator.pushNamed(context, "/book");
+              },
+            )),
+            divisorListMain(),
           ],
         ));
   }
