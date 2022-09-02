@@ -1,4 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_all_persistence_types/firebase/listCar.dart';
 import 'package:flutter_all_persistence_types/models/DatabaseWidget.dart';
 import 'package:flutter_all_persistence_types/nosql/listBook.dart';
 
@@ -6,6 +8,8 @@ import 'screens/home.dart';
 import 'sqllite/listPerson.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -25,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => Home(),
         '/person': (context) => ListPerson(),
         '/book': (context) => ListBook(),
+        '/car': (context) => ListCar(),
       },
     );
   }

@@ -42,6 +42,16 @@ class Home extends StatelessWidget {
               },
             )),
             divisorListMain(),
+            Expanded(
+                child: ListTile(
+              leading: buildSvgIcon('images/firebase.svg'),
+              title: const Text('Firebase Cloud Firestore'),
+              subtitle: const Text('Lista de carros'),
+              trailing: const Icon(Icons.navigate_next),
+              onTap: () {
+                Navigator.pushNamed(context, "/car");
+              },
+            )),
           ],
         ));
   }
